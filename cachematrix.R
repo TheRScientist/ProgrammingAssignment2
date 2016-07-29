@@ -5,31 +5,31 @@
 ## MakeCacheMatrix Function stores matrix in memory
 
 makeCacheMatrix <- function(X = matrix()) {
-        inverse <- NULL
+        inv <- NULL
         set <- function(Y){
                 X <<- Y
-                inverse <<- NULL
+                inv <<- NULL
         }
         get <- function() X
-        setinverse <- function(Inverse) inverse <<- Inverse
-        getinverse <- function() inverse
+        setinverse <- function(Inverse) inv <<- Inverse
+        getinverse <- function() inv
         list(set=set,get=get,setinverse=setinverse,getinverse=getinverse)
 }
-
 
 ## Write a short comment describing this function
 ##cacheSolve first checks to see if the matrix has already been calculated. If not it calculates the inverse of the matrix.
 
 cacheSolve <- function(X, ...) 
 {
-        if(!is.null(inverse)){
-                message("matrix is in memory")
-                return(inverse)
+        
+        inv <- X$getinverse()
+        if(!is.null(inv)){
+                message("getting cached data")
+                return(inv)
         }
-        message("inverse is not in memory so the inverse (if exist) is gonna be computed")
+        message("inverse is gonna be computed")
         data <- X$get()
-        inverse <- pseudoinverse(data, ...)
-        X$setinverse(inverse)
-        inverse
+        inv <- pseudoinverse(data, ...)
+        X$setinverse(inv)
+        inv
 }
-
